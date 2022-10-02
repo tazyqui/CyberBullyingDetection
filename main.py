@@ -1,42 +1,58 @@
 # External
 import nltk
 import matplotlib
-from nltk.sentiment import SentimentIntensityAnalyzer
+
 # Internal
-from src import download, FD
+from src import download, FD, analysis, words
 
 if __name__ == "__main__":
   # Download nltk data
   print("Grabbing NLTK Values...", end=' ')
+
   nltk.download([
     "stopwords", "names", "punkt", "vader_lexicon",
     "averaged_perceptron_tagger", "wordnet", "omw-1.4", "words"
   ],
                 quiet=True)
-  print("Done.")
+  print("Done.\nDownloading Data...", end=' ')
 
-  # Get Data from CSV
-  print("Downloading...", end=' ')
-  pos, neg = download.get_data('data/kaggle_parsed_dataset.csv')
-  print("Done.")
+  # Get Texts from CSV
+  pos_texts, neg_texts = download.get_data('data/kaggle_parsed_dataset.csv')
 
   # Convert Data into Frequency Distribution Tables
-  print("Converting...", end=' ')
-  pos_FD = FD.getFD(pos)
-  neg_FD = FD.getFD(neg)
+  print("Done.\nConverting...", end=' ')
+  pos_words, neg_words = words.text_to_words(pos_texts, neg_texts)
+  pos_FD = FD.getFD(pos_words)
+  neg_FD = FD.getFD(neg_words)
   pos_FD, neg_FD = FD.remove_common(pos_FD, neg_FD)
+  top_neg = list(map(lambda x: x[0], neg_FD.most_common(110)))
+  print("Done.\nAnalyzing...", end=' ')
+
+  #Create Features
+  features = analysis.create_list_of_features(pos_texts, neg_texts, top_neg)
+  print("Done.\n\n")
+
+  # Train the Model
+  print("Training...", end=' ')
+  classifier = analysis.train_model(features)
   print("Done.")
 
-  # Train Model
+  # Test the Model
+  print("Model is ready to be used!")
+  while True:
+    text = input("\nPlease input a line of text: ")
+    text = download.cleaner(text)  # Clean text for analysis
 
-  
+    features = analysis.extract_features(text, top_neg)
 
-  # Testing
-  neg_FD.tabulate(10)
-  pos_FD.tabulate(10)
+    print("\n\nFEATURES")
+    print(features)
+    print(classifier.classify(features))
 
-  #sia = SentimentIntensityAnalyzer()
 
-  #for ind in range(2):
-  #print(pos_FD[ind])
-  #print(sia.polarity_scores(dataset[ind][0]))
+# Testing
+#print("\n\nNEGATIVE FLAGGED WORDS")
+#neg_FD.tabulate(110)
+
+#print("\n\nPOSITIVE FLAGGED WORDS")
+#pos_FD.tabulate(110)
