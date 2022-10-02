@@ -1,7 +1,3 @@
-import nltk
-from nltk.tag import pos_tag
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
 import csv
 import codecs
 import re
@@ -66,7 +62,6 @@ def get_data(filename):
       if row_count != 0:
         # Clean Text
         text = cleaner(row[1][1:-1])
-        #print(text)
 
         # Output Data as a Tuple of Words
         if int(row[0]) == 0:

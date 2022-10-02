@@ -1,9 +1,9 @@
 # External
 import nltk
-import matplotlib
 
 # Internal
 from src import download, FD, analysis, words
+import os
 
 if __name__ == "__main__":
   # Download nltk data
@@ -18,6 +18,10 @@ if __name__ == "__main__":
 
   # Get Texts from CSV
   pos_texts, neg_texts = download.get_data('data/kaggle_parsed_dataset.csv')
+  pos_texts2, neg_texts2 = download.get_data('data/twitter_parsed_dataset.csv')
+  
+  pos_texts += pos_texts2
+  neg_texts += neg_texts2
 
   # Convert Data into Frequency Distribution Tables
   print("Done.\nConverting...", end=' ')
@@ -34,21 +38,33 @@ if __name__ == "__main__":
 
   # Train the Model
   print("Training...", end=' ')
-  classifier = analysis.train_model(features)
+  classifier, accuracy = analysis.train_model(features)
   print("Done.")
 
+  print("Accuracy: ", end='')
+  print(accuracy)
+
   # Test the Model
-  print("Model is ready to be used!")
+  print("\nModel is ready to be used!")
   while True:
+
     text = input("\nPlease input a line of text: ")
-    text = download.cleaner(text)  # Clean text for analysis
+    os.system('clear')
+
+    print("INPUT\n" + text)
+    text = download.cleaner(text)
 
     features = analysis.extract_features(text, top_neg)
+    classification = classifier.classify(features)
 
-    print("\n\nFEATURES")
+    print("\nFEATURES")
     print(features)
-    print(classifier.classify(features))
-
+    print("\nCLASSIFICATION")
+    if(classification == "pos"):
+      print("Not Bullying/Harassment")
+    else:
+      print("Bullying/Harassment Detected!")
+    
 
 # Testing
 #print("\n\nNEGATIVE FLAGGED WORDS")

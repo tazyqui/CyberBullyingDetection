@@ -1,7 +1,5 @@
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
-from nltk.tokenize import word_tokenize
-from nltk.tokenize import sent_tokenize
 
 import random
 from itertools import repeat
@@ -36,11 +34,7 @@ def train_model(features):
   # Use 1/4th for training
   count = len(features) // 4
   random.shuffle(features)
-  print(features)
   classifier = nltk.NaiveBayesClassifier.train(features[:count])
+  accuracy = nltk.classify.accuracy(classifier, features[count:])
 
-  classifier.show_most_informative_features(10)
-  print("Accuracy: ", end='')
-  print(nltk.classify.accuracy(classifier, features[count:]))
-
-  return classifier
+  return classifier, accuracy
