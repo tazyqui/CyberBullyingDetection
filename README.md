@@ -9,3 +9,8 @@ Data: We used 2 datasets provided by Kaggle (kaggle_parsed_dataset and twitter_p
 
 Result: The program works with a ~70% accuracy according to the classifier we trained. However, it's sometime too sensitive to certain words and not sensitive enough 
 to other words. We think that the model could be improve with more data. However, the more data provided, the longer it takes for the model to build.
+
+Compilation Instruction:
+1. Download python (version 3.8.12 was used for this project)
+2. Install nltk library.
+3. You can now run the program by going to the folder that contain main.py in the command prompt and type "python main.py"
