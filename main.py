@@ -16,7 +16,7 @@ if __name__ == "__main__":
                 quiet=True)
   print("Done.\nDownloading Data...", end=' ')
 
-  # Get Texts from CSV
+  # Get Texts from CSV   #Add more data here for better accuracy
   pos_texts, neg_texts = download.get_data('data/kaggle_parsed_dataset.csv')
   pos_texts2, neg_texts2 = download.get_data('data/twitter_parsed_dataset.csv')
   

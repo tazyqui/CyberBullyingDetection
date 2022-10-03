@@ -2,6 +2,7 @@ import csv
 import codecs
 import re
 
+
 # Clean Text Data Manually
 def cleaner(text):
   # Set text to lowercase
@@ -47,7 +48,7 @@ def get_data(filename):
   pos_data = []
   neg_data = []
 
-  with open(filename) as file:
+  with open(filename, encoding = "utf-8") as file:
     csv_reader = csv.reader(file,
                             quotechar='"',
                             delimiter=',',
@@ -57,12 +58,11 @@ def get_data(filename):
     for row in csv_reader:
       # TESTING PURPOSE:
       #if row_count == 25:
-      #  break
+        #break
 
       if row_count != 0:
         # Clean Text
         text = cleaner(row[1][1:-1])
-
         # Output Data as a Tuple of Words
         if row[0] == "0":
           pos_data.append(text)

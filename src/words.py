@@ -2,8 +2,6 @@ import nltk
 from nltk.tag import pos_tag
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-import csv
-import codecs
 import re
 
 # Helper Function to Lemmatize List of Words
