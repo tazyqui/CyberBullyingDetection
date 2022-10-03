@@ -64,7 +64,7 @@ def get_data(filename):
         text = cleaner(row[1][1:-1])
 
         # Output Data as a Tuple of Words
-        if int(row[0]) == 0:
+        if row[0] == "0":
           pos_data.append(text)
         else:
           neg_data.append(text)
